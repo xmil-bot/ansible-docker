@@ -1,0 +1,29 @@
+- hosts: testhosts
+  tasks:
+   - name: Install prerequisites for Docker-ce
+     yum:
+      name: yum-utils
+     become: true
+   - name: Add docker-repo
+     become: true
+     shell: 'yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo'
+   - name: Install docker-ce
+     yum:
+      name: docker-ce
+     become: true
+   - name: Start docker-ce
+     become: true
+     shell: |
+      systemctl start docker
+      systemctl enable docker
+   - name: Install curl
+     yum:
+      name: curl
+     become: true
+   - name: Install docker-compose
+     become: true
+     shell: 'curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose'
+   - name: Change mode
+     become: true
+     shell: 'chmod +x /usr/local/bin/docker-compose'
+
